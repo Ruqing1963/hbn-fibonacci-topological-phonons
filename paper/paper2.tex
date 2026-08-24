@@ -1,0 +1,494 @@
+% paper2.tex — Topological phonon gaps in Fibonacci isotope nanoribbons of h-BN
+% Compile: pdflatex paper2 && bibtex paper2 && pdflatex paper2 && pdflatex paper2
+\documentclass[aps,prl,preprint,superscriptaddress,longbibliography]{revtex4-2}
+% switch 'preprint' -> 'reprint' for the journal two-column layout
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\graphicspath{{figures/}}
+\begin{document}
+
+\title{Topological phonon gaps in Fibonacci isotope nanoribbons of hexagonal boron nitride}
+
+\author{Ronghua Wu}
+\email{wrh@gdtzn.com}
+\affiliation{Zhuhai Jiuchongtian Aviation Technology Co., Ltd., Zhuhai, China}
+\author{Ruqing Chen}
+\email{ruqing@hotmail.com}
+\affiliation{GUT Geoservice Inc., Montreal, Canada}
+
+\date{\today}
+
+\begin{abstract}
+Hyperuniform isotope order suppresses phonon scattering through a power law
+that transverse channel averaging cannot disturb [R.~Wu and R.~Chen, Zenodo
+(2026)]. Here we invert the objective and ask for the opposite spectral
+object: a topologically labelled phonon gap, which the same averaging
+destroys. Survival therefore demands a strictly single-mode nanoribbon, and
+with it a confrontation with edge-roughness decoherence. Anchoring the
+roughness scattering to a grid-converged boundary-conforming Green's-function
+calculation, validated against an analytic Born result, we find that the
+Ziman ray formula underestimates the coherence length by an order of
+magnitude in the single-mode wave limit $\lambda \gg W$: a zero-parameter law
+$\xi_{\mathrm{edge}} = 2W^2/[q^2 S_w(2q)]$ reproduces a 15-point numerical
+scan with all three exponents (frequency to $10^{-3}$) and magnitude to $3.5\%$, softening the edge-flatness requirement
+from atomic ($\lesssim 0.13$~nm) to lithographic ($\lesssim 1$~nm). A
+Fibonacci $^{10}$BN/$^{11}$BN modulation of period $24.8$~nm in a $30$~nm
+ribbon places a Chern-labelled gap at $0.250$~THz at a factor $2.20$ cost in
+localization length relative to a periodic superlattice. Gap labelling is
+verified falsifiably (median residual $3\times10^{-6}$, $1385\times$ below
+random controls) and phason pumping exhibits the full counter-propagating
+edge-state structure, with per-edge spectral flow $\pm q$ for all twelve
+principal gaps up to $|q| = 11$. We propose an asynchronous-optical-sampling
+cavity measurement with a built-in opposite-Chern-number control gap.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+In a companion work~\cite{paper1} we established that the relaxation rate for
+phonon scattering by a spatially correlated isotope arrangement obeys
+$\tau^{-1}_{\rm iso} \propto \omega^{\,d+1+\alpha}$, the hyperuniformity
+exponent $\alpha$ of the arrangement~\cite{torquato2003} entering as an
+additive, dimension-independent correction to the Rayleigh--Tamura
+exponent~\cite{tamura1983}. The conclusion drawn there was suppressive:
+ordering the isotopes \emph{removes} long-wavelength scattering. The present
+work inverts the objective, and in doing so inverts every geometric
+conclusion that followed from it.
+
+\emph{The mirror.}---A power law is a scale invariant. Averaging it over the
+transverse channels of a three-dimensional sample changes the prefactor and
+leaves the exponent untouched; that immunity licensed the thick-sample
+geometry of Ref.~\cite{paper1}, and made the nanoribbon actively harmful
+there. Here we seek a gap. A gap is not scale invariant: its position in
+transverse channel $m$ is set by the channel's own longitudinal wavevector,
+$q_m^2 = (\omega^2 - v^2 k_m^2)/v^2$, so a channel sum migrates the gap
+frequency channel by channel and smears a Cantor set of gaps into a
+featureless continuum. The very averaging that protects a power law destroys
+a gap. Transverse quantisation is therefore not a preference but a
+prerequisite, in its strictest form: single-mode operation,
+$N_{\rm prop} = 1$. That admits only the one-dimensional nanoribbon --- the
+geometry Ref.~\cite{paper1} discarded --- and hands us the edge-decoherence
+problem it avoided. Section~\ref{sec:survival} is that confrontation. The two
+papers do not disagree: they report one physical fact, that channel averaging
+preserves exponents and destroys gaps, read under opposite objectives.
+
+\emph{Why Fibonacci, and not the primes.}---A gap alone is not topological.
+The topological content of a one-dimensional quasiperiodic chain rests on the
+gap-labelling theorem~\cite{bellissard1992}, which applies to sequences with
+a pure-point diffraction spectrum and a cut-and-project construction:
+Fibonacci~\cite{kohmoto1983,ostlund1983}, Sturmian words, the quadratic
+irrationals. Under cut-and-project the chain is a slice of a two-dimensional
+periodic parent, the slice offset $\phi$ is a synthetic second
+dimension~\cite{kraus2012}, and each gap carries an integer label $q$ that is
+the Chern number of that parent. The primes possess none of this structure:
+their diffraction is closer to limit-periodic than to quasiperiodic, with no
+phason, no synthetic dimension, and no gap label. A prime-indexed modulation
+would open a dense family of weak gaps carrying no invariant. We note this
+explicitly because the arithmetic appeal of such a construction is
+considerable and its topological content is nil.
+
+If the gaps of a Fibonacci isotope ribbon are genuinely labelled, their
+positions are fixed by the sequence rather than by any realisation of
+disorder, and edge branches must traverse gap $q$ exactly $q$ times per
+phason cycle~\cite{kraus2012,apigo2019}. Section~\ref{sec:topo} tests both
+statements. Section~\ref{sec:survival} first establishes whether such a
+ribbon can exist at all.
+
+\section{The survival window}
+\label{sec:survival}
+
+\subsection{Transfer matrix and localisation length}
+
+For a chain of masses $M_n$ with nearest-neighbour force constant $K$ and
+spacing $a$,
+\begin{equation}
+\begin{pmatrix} u_{n+1} \\ u_n \end{pmatrix} = T_n
+\begin{pmatrix} u_n \\ u_{n-1} \end{pmatrix}, \quad
+T_n = \begin{pmatrix} 2 - M_n\omega^2/K & -1 \\ 1 & 0 \end{pmatrix},
+\end{equation}
+the inverse localisation length is the Lyapunov exponent
+$\gamma(\omega) = \lim_{N\to\infty} N^{-1}\ln\|\prod_n T_n\|$, with
+$\xi = a/\gamma$ and in-gap transmission
+$\mathcal{T}(L) \sim e^{-2L/\xi}$~\cite{anderson1958}. Force constants are
+isotope-independent within the Born--Oppenheimer approximation, so a single
+primitive-cell calculation serves every arrangement; only the diagonal mass
+matrix is rebuilt.
+
+\subsection{Gap strength from the mass contrast}
+
+The $^{10}$BN and $^{11}$BN formula units (24.01 vs.\ 25.01~amu) give a
+density contrast $\Delta\rho/\rho = 4.1\%$, an impedance contrast
+$\Delta Z/Z = 2.04\%$, and single-interface reflection $|r| = 0.0102$
+\cite{vuong2018}. Weak-reflection theory predicts
+\begin{equation}
+\xi_{\rm gap} = \frac{d}{2|r|}, \qquad
+\frac{\Delta\omega}{\omega} = \frac{2|r|}{\pi} = 0.67\%,
+\label{eq:gapstrength}
+\end{equation}
+with $d$ the modulation period; direct Lyapunov calculation on
+$2\times10^5$-site chains reproduces both to $1$--$6\%$.
+
+\subsection{The cost of topology}
+
+Quasiperiodicity distributes reflection strength across a Cantor set of gaps
+instead of one Bragg resonance~\cite{kohmoto1983,merlin1985}. A
+same-frequency comparison settles its price: a periodic superlattice with its
+Bragg gap at $0.25$~THz ($d_{\rm per} = 40.1$~nm) gives
+$\xi_{\rm per} = 1.96\,\mu$m, matching the analytic $d/2|r|$ to three digits,
+while the Fibonacci $(0,1)$ gap placed at the same frequency gives
+$\xi_{\rm gap} = 4.31\,\mu$m. Topology costs
+\begin{equation}
+\xi_{\rm fib}/\xi_{\rm per} = 2.20
+\end{equation}
+at matched frequency and mass contrast.
+
+\subsection{Two perturbations, opposite symmetries}
+
+The isotope modulation spans the full ribbon cross-section and is strictly
+diagonal in the transverse basis,
+$V^{\rm iso}_{mm'} = -\omega^2\epsilon(z)\delta_{mm'}$: it opens a gap in
+every channel independently, at a channel-dependent frequency --- the
+smearing mechanism restated. Edge roughness breaks transverse translation
+and is off-diagonal; its consequence depends qualitatively on the mode
+count. In multi-mode operation it scatters between subbands --- genuine
+decoherence. In single-mode operation there is nowhere to scatter but
+backwards, and the mechanism reduces to one-dimensional Anderson
+localisation, which \emph{adds} to $\gamma$ rather than destroying the gap.
+A single-mode ribbon converts the dominant loss into one of a different
+kind; establishing strict single-mode operation is accordingly the central
+technical requirement.
+
+\subsection{The tension and the working point}
+\label{sec:tension}
+
+Single-mode operation with free (Neumann) edges requires $f < v/2W$.
+Coherence requires $\xi_{\rm dis} > 3\,\xi_{\rm gap}$. With
+$\xi_{\rm gap} = C_\xi\lambda$ and the calibrated law of
+Sec.~\ref{sec:calib}, the two combine into
+\begin{equation}
+\lambda^3 > 24\pi^2 C_\xi\, S_w(2q) \;\Rightarrow\;
+\lambda \gtrsim 54\,[\Delta_r/\mathrm{nm}]^{2/3}~\mathrm{nm},
+\end{equation}
+a far softer wall than the linear bound the Ziman form would imply; the
+change of exponent from $\Delta_r$ to $\Delta_r^{2/3}$ follows from the
+$W^2$ law below.
+
+The gaps of a Fibonacci chain sit on the Fourier module,
+\begin{equation}
+f_{(p,q)} = \frac{v}{2d}\,\bigl|p + q\,\tau^{-1}\bigr|,
+\label{eq:module}
+\end{equation}
+$\tau = (1+\sqrt5)/2$. Placing the $q = 1$ gap at the target frequency fixes
+$d = \tau^{-1} v/2f = 24.8$~nm ($99$ lattice sites per letter); a
+module-targeted scan confirms all four principal gaps within $0.3\%$ of
+Eq.~\eqref{eq:module}, with labels verified through the integrated density of
+states (IDOS). Two findings deserve record. The $(1,0)$ gap --- the only one
+periodic intuition would seek, at $v/2d$ --- is thirty times weaker than
+$(0,1)$ at this decoration and carries $q = 0$: not topological, and
+fortunately nearly absent. The $(1,-1)$ gap at $0.154$~THz is as strong as
+$(0,1)$ ($\xi = 4.18\,\mu$m) with the opposite label; both lie below the
+single-mode ceiling of a $30$~nm ribbon, so one device hosts two topological
+gaps of opposite Chern number --- a built-in control for
+Sec.~\ref{sec:expt}.
+
+\begin{table}[b]
+\caption{\label{tab:wp}Working point. $\xi_{\rm dis}$ from the calibrated
+law of Sec.~\ref{sec:calib}; margins are $\xi_{\rm dis}/\xi_{\rm gap}$.}
+\begin{ruledtabular}
+\begin{tabular}{lc}
+frequency / operating gap & $0.250$~THz, $(0,1)$, $q = 1$\\
+ribbon width $W$ / period $d$ & $30$~nm / $24.8$~nm\\
+$\xi_{\rm gap}$ & $4.31\,\mu$m\\
+$\xi_{\rm dis}$ at $\Delta_r = 0.6$ ($1.0$)~nm & $76$ ($30$)\,$\mu$m\\
+coherence margin & $18\times$ ($7.0\times$)\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Calibration: breakdown of the ray formula}
+\label{sec:calib}
+
+The solver is validated three ways before any scan: it reproduces the
+clean-ribbon limit exactly ($\mathcal{T} = N_{\rm prop}$ to five digits at
+three grid spacings, every transmission eigenvalue equal to unity); it passes
+a realization-matched grid-convergence gate ($1.3\%$ between $h = 1$ and
+$0.5$~nm); and it reproduces the analytic single-bump Born reflection
+$|r|^2 = (q^2/W^2)|\tilde a(2q)|^2$, converging with the grid to a uniform
+$+3.7\%$ excess --- a genuine second-order correction whose role below is
+decisive.
+
+The definitive scan --- fifteen single-mode-locked parameter points, $24$
+disorder seeds and six lengths each, every length window spanning
+$(0.4\text{--}3)\,\xi$ of the law itself so that the decay is sampled rather
+than extrapolated --- gives
+\begin{align}
+\frac{{\rm d}\ln\xi}{{\rm d}\ln\Delta_r} &= -1.91 \pm 0.06, &
+\frac{{\rm d}\ln\xi}{{\rm d}\ln W} &= +1.87 \pm 0.08,\nonumber\\
+\frac{{\rm d}\ln\xi}{{\rm d}\ln f} &= -1.384 \pm 0.095,
+\end{align}
+against the law's $(-2,\,+2,\,-2+4q^2L_c^2 = -1.38)$: all three within
+tolerance, the frequency exponent to one part in a thousand. The absolute
+magnitude matches with median $\xi_{\rm meas}/\xi_{\rm law} = 0.965$, while
+the single-bump test independently predicts $1/1.037 = 0.964$ for the same
+second-order excess: two measurements of one correction, one deterministic
+and one ensemble-averaged, agreeing to $10^{-3}$. Across the scan the Ziman
+formula underestimates $\xi$ by a median factor of $10.8$: in the single-mode
+wave limit $\lambda \gg W$ a rough edge is Born-transparent, and the
+ray-limit picture of diffuse wall collisions does not apply. The scaling
+structure --- the rate $q^2 S_w(2q)/W^2$ --- agrees with the perturbative
+treatment of roughness scattering in few-mode elastic waveguides given by
+Santamore and Cross~\cite{santamore2001} in the context of the
+thermal-conductance quantum, there for clamped elastic boundaries; the
+closed zero-parameter form of Eq.~\eqref{eq:law}, its absolute
+normalization, and its verification deep into the localized regime are the
+additions made here. The residuals
+retain a mild trend in $qL_c$ (from $0.78$ at $qL_c = 0.16$ to $1.12$ at
+$0.42$), the expected fingerprint of second-order structure beyond the
+leading law.
+
+Methodological record --- three failure modes, each caught by a different
+gate and none by inspection. A staircase-masked solver produced
+grid-divergent spurious \emph{excess} scattering ($\xi = 120/42/16$~nm at
+$h = 2/1/0.5$~nm; no continuum limit), caught by grid-convergence testing. A
+naive finite-difference discretization of the transformed operator was
+non-Hermitian and current-violating (transmission eigenvalues up to $1.26$)
+while remaining grid-\emph{converged} and Born-consistent in total
+transmission: invisible to convergence testing, exposed only by a unitarity
+gate on the transmission-eigenvalue spectrum, and cured by assembling the
+discrete operator from the quadratic form of the problem, which makes
+Hermiticity ($R_{m+1} = P_m^{\mathsf T}$ by construction) and the exact
+tilted-wall Neumann condition properties of the construction rather than of
+a hand-derived stencil. Length windows tied to the Ziman estimate --- eleven
+times too short --- sample only shallow decay and biased the $W$ exponent by
+$+0.3$ in a preliminary pass: windows must track the law being tested. And a
+scan whose ladders crossed a transverse-mode threshold returned exponents of
+opposite sign on one axis ($+5.45$ and $-2.91$), the diagnostic signature of
+an unenforced single-mode condition. 
+
+The consequence is the central practical result of this section: coherence no
+longer demands $\Delta_r \lesssim 0.13$~nm --- a single atomic row --- but
+survives $\Delta_r = 0.6$~nm with an eighteen-fold margin and clears the
+$3\times$ threshold at $1.0$~nm (Table~\ref{tab:wp},
+Fig.~\ref{fig:survival}): within routine electron-beam lithography.
+
+A scope statement, owed to the reader before the topology of
+Sec.~\ref{sec:topo} is built on these numbers: everything above treats a
+single scalar polarization with linear dispersion $v = 20$~nm/ps. A real
+suspended h-BN ribbon carries four low-frequency branches --- longitudinal,
+in-plane transverse, torsional, and a flexural branch whose dispersion is
+quadratic and which dominates the low-frequency density of states. The two
+mechanisms this paper rests on are polarization-generic: gap labelling
+requires only one-dimensional quasiperiodicity of the mass sequence, and
+Born transparency only $q$-selective backscattering from a weak boundary
+perturbation, so the structure of Eq.~\eqref{eq:law} and of the module
+\eqref{eq:module} carries over branch by branch. The numbers do not: mode
+mixing among branches, the quadratic flexural dispersion, and
+branch-dependent edge coupling will shift working-point frequencies,
+$\xi$ values and margins, and the scalar model is best read as a
+quantitative treatment of the longitudinal channel and a structural
+template for the rest. A full elastic calculation is the natural next step
+and lies outside this paper.
+
+\section{Topological verification}
+\label{sec:topo}
+
+\subsection{Gap labelling, falsifiably}
+
+Within each gap the IDOS is constant and restricted by the gap-labelling
+theorem to
+$\mathcal{N} = (p + q\,\tau^{-1}) \bmod 1$~\cite{bellissard1992}. We compute
+$\mathcal{N}$ by Sturm node counting on the transfer-matrix recursion
+($\mathcal{O}(N)$, no diagonalisation); Table~\ref{tab:gaps} lists the
+twelve strongest gaps of a $6\times10^4$-site chain
+(Fig.~\ref{fig:gamma}). The two strongest take the textbook values
+$\tau^{-1}$ and $1 - \tau^{-1}$.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig_gamma_idos.pdf}
+\caption{\label{fig:gamma}Lyapunov spectrum $\gamma(\omega)$ (top) and IDOS
+staircase (bottom) of the Fibonacci chain, with the twelve labelled gaps of
+Table~\ref{tab:gaps}. Inset: gap-labelling residuals, measured gaps against
+$3\times10^3$ random controls (log axis) --- the falsifiability argument of
+Sec.~\ref{sec:topo} in one picture.}
+\end{figure}
+
+
+Taken at face value the test is vacuous: $\mathbb{Z} + \tau^{-1}\mathbb{Z}$
+is dense in $[0,1]$, so some pair fits any number. The content is
+quantitative. Against $5\times10^3$ uniform controls under the identical
+fitting procedure ($|q| \le 30$): measured gaps show median residual
+$2.95\times10^{-6}$ (maximum $5.95\times10^{-6}$); random controls,
+$4.08\times10^{-3}$ --- a separation of $1385$; the probability that a
+random value fits as well as the \emph{worst} measured gap is
+$p = 1.4\times10^{-3}$. We recommend this control whenever gap labelling is
+claimed numerically.
+
+\begin{table}[t]
+\caption{\label{tab:gaps}The twelve principal gaps ($N = 6\times10^4$
+sites). $\xi$ at gap centre; residual is
+$|\mathcal{N} - (p + q\tau^{-1})|$ for the best pair with $|q| \le 30$.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+$f$ (THz) & $\gamma$ (site$^{-1}$) & $\xi$ (nm) & IDOS & $(p,q)$ & resid.\\
+\hline
+14.386 & 0.00839 & 29.9 & 0.38197 & $(1,-1)$ & $7{\times}10^{-7}$\\
+17.213 & 0.00290 & 86.5 & 0.47213 & $(-2,4)$ & $3{\times}10^{-6}$\\
+18.792 & 0.00356 & 70.3 & 0.52787 & $(3,-4)$ & $3{\times}10^{-6}$\\
+19.693 & 0.00170 & 147.4 & 0.56230 & $(-5,9)$ & $6{\times}10^{-6}$\\
+21.040 & 0.01744 & 14.4 & 0.61803 & $(0,1)$ & $7{\times}10^{-7}$\\
+22.222 & 0.00284 & 88.1 & 0.67377 & $(5,-7)$ & $5{\times}10^{-6}$\\
+22.859 & 0.00345 & 72.6 & 0.70820 & $(-3,6)$ & $4{\times}10^{-6}$\\
+23.760 & 0.01155 & 21.7 & 0.76393 & $(2,-2)$ & $1{\times}10^{-6}$\\
+24.222 & 0.00185 & 135.1 & 0.79837 & $(-6,11)$ & $7{\times}10^{-6}$\\
+24.479 & 0.00239 & 104.7 & 0.81967 & $(7,-10)$ & $7{\times}10^{-6}$\\
+24.826 & 0.00812 & 30.8 & 0.85410 & $(-1,3)$ & $2{\times}10^{-6}$\\
+25.239 & 0.00516 & 48.5 & 0.90983 & $(4,-5)$ & $3{\times}10^{-6}$\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Phason pumping: the full counter-propagating structure}
+\label{sec:pump}
+
+The phason angle $\phi$ of the cut-and-project word
+$s_n(\phi) = \lfloor (n{+}2)\tau^{-1}{+}\phi \rfloor -
+\lfloor (n{+}1)\tau^{-1}{+}\phi \rfloor$ is the synthetic dimension; a full
+cycle traverses the hull, and edge branches must cross gap $q$ exactly $q$
+times~\cite{kraus2012}. Tracking such branches requires care: sorting by
+frequency exchanges identities at band crossings, so we continue states by
+eigenvector overlap with Hungarian assignment, terminating any branch whose
+best overlap falls below $0.15$, and record left- and right-end weights
+separately (Fig.~\ref{fig:phason}).
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig_phason.pdf}
+\caption{\label{fig:phason}Phason spectrum of the $(0,1)$ gap: frequency
+against $\phi$, bulk states as points, edge-bound branches coloured by the
+\emph{instantaneous} dominant end (blue left, orange right), line width
+$\propto$ edge weight. The colour change at the in-gap degeneracy is the
+identity exchange of Sec.~\ref{sec:topo}C.}
+\end{figure}
+
+
+A first pass on the $(0,1)$ gap ($610$-site free chain, $400$ steps) tracked
+$27$ branches and reported a single edge-bound branch --- right end, weight
+$0.721$, sweeping $86\%$ of the gap with one kink --- stable across chain
+lengths $610$--$1597$ and steps $400$--$800$. Taken alone this suggested a
+one-sided pump. Two basis-independent measurements correct that reading.
+\emph{Spectral flow}: counting eigenvalues below each gap centre at $600$
+phason steps, every one of the twelve gaps shows exactly $|q|$ downward and
+$|q|$ upward crossings per cycle --- $1{+}1$ for $(0,1)$, $3{+}3$ for
+$(-1,3)$, up to $11{+}11$ for $(-6,11)$ --- without exception.
+\emph{Crossing-moment classification}: diagonalizing with eigenvectors at
+each detected crossing, the descending crossings of every $q > 0$ gap are
+right-bound and the ascending left-bound, exactly mirrored for $q < 0$; for
+$(-1,3)$ all six crossings alternate side-perfectly, and the $(0,1)$ pair
+carries weights $0.72$ and $0.71$. The counter-propagating pair exists in
+full; the per-edge spectral flow equals $\pm q$; the bulk--boundary
+correspondence holds in its standard form for all twelve labels.
+
+\subsection{A cautionary note on overlap tracking}
+
+Why did the first pass see one branch? The two counter-propagating edge
+modes hybridize where they are degenerate inside the gap; at that avoided
+crossing, overlap continuation --- by construction --- follows the smoothly
+deforming hybrids and exchanges identities, stitching the descending halves
+of the two branches into a single apparent branch with one kink: precisely
+the phenomenology reported. The spectral-flow classification never asks for
+continuity between steps and is immune. Under fixed (Dirichlet) ends the
+pair persists (crossings at $\phi = 0.833, 0.932$ against $0.618, 0.147$
+free), so termination relocates the crossings but removes nothing. We record
+the artefact because Hungarian-overlap continuation is standard practice for
+pump spectra, and it fails silently in exactly the situation ---
+counter-propagating branches meeting inside a gap --- that topological pumps
+guarantee.
+
+\section{Experimental design}
+\label{sec:expt}
+
+\subsection{Frequency band; exclusion of transient gratings}
+
+The working gap sits at $0.250$~THz, $\lambda = 80$~nm. The natural
+wavevector-selective probe, the transient thermal grating, is excluded by
+optics: two beams of wavelength $\lambda_{\rm opt}$ cannot write a grating
+finer than $\lambda_{\rm opt}/2$, so a $400$~nm pump bottoms out near
+$200$~nm --- $2.5\times$ too coarse --- and $266$~nm reaches only $133$~nm.
+No geometry closes the factor. The measurement must be performed in the time
+domain: asynchronous optical sampling (ASOPS) between two femtosecond
+oscillators offset by a few kHz~\cite{bartels2007} provides
+$\sim\!100$~fs effective resolution across the full $12.5$~ns repetition
+window, sampling a $4$~ps acoustic period over $\sim\!3\times10^3$ cycles
+--- spectral resolution $\sim\!0.3$~GHz.
+
+\subsection{Cavity-mode spectroscopy of the gap}
+
+Aluminium pads ($\sim$20~nm) on both ends serve as broadband phonon
+sources~\cite{thomsen1986}, detection mirrors, and the reflectors of an
+acoustic Fabry--P\'erot cavity; the ribbon interior is interrogated through
+its mode spectrum alone. A cavity of $L = 20\,\mu$m has free spectral range
+$v/2L = 0.5$~GHz; the $(0,1)$ gap ($1.7$~GHz) expels three to four
+consecutive modes, and with $\xi_{\rm gap} = 4.31\,\mu$m the in-gap
+transmission $e^{-2L/\xi} \approx 10^{-4}$: modes are removed, not shifted.
+The observable is differential, as in Ref.~\cite{paper1}: the Fibonacci
+ribbon is paired on-chip with a composition-matched random permutation of
+the same isotope content; boundary, transducer and anharmonic contributions
+cancel to first order (Fig.~\ref{fig:expt}). The resolution budget is
+stated plainly: five elements across the $(0,1)$ gap, three across
+$(1,-1)$ --- sufficient to establish absence of modes, insufficient for
+lineshape work.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig_experiment.pdf}
+\caption{\label{fig:expt}Proposed measurement (schematic). (a)~Ribbon with
+Fibonacci isotope letters and Al transducers. (b)~Illustrative cavity
+spectra: composition-matched random control (grey, full mode comb) against
+Fibonacci (blue, gap emptied), with the $\phi$-dependent edge mode inside
+the gap.}
+\end{figure}
+
+
+\subsection{Edge-state pumping by a phason array}
+
+The phason angle is fixed lithographically, one value per ribbon; an array
+of $\sim$20 ribbons at $\phi = 0, 0.05, \ldots, 0.95$ converts the pump
+cycle into chip position. Section~\ref{sec:pump} predicts an in-gap
+resonance whose frequency advances monotonically across the array, present
+for most of the cycle. Two structural controls come free. The $(1,-1)$ gap
+in the same ribbons carries the opposite label, so its in-gap resonance must
+wind oppositely across the same array; any trivial systematic --- strain,
+thickness drift, composition gradient --- moves both gaps identically and
+is excluded. And the counter-propagating structure is directly testable:
+the descending resonance ($\phi \approx 0.62$ for $(0,1)$) lives at one end
+and the ascending one ($\phi \approx 0.15$) at the other, so exchanging
+pump and probe transducers must swap which portion of the array shows the
+stronger in-gap response --- a signature no single-sided mechanism
+reproduces.
+
+\subsection{Sample specification}
+
+$W = 30$~nm (single-mode to $0.267$~THz); $L = 20\,\mu$m
+($4.6\,\xi_{\rm gap}$); $d = 24.8$~nm ($99$ sites per letter);
+$\sim$800 letters per ribbon ($F_{16} = 987$ truncated);
+$\Delta_r \le 0.6$~nm rms ($18\times$ margin); $T \le 4$~K. The isotope
+pattern is one-dimensional and in-plane, within electron-beam masking
+resolution, with sequential two-precursor regrowth as the candidate route.
+The contrast with Ref.~\cite{paper1} bears repeating: that design required
+$2.4\times10^5$ independently specified units over $300\,\mu$m; this one,
+$\sim$800 letters over $20\,\mu$m at mesoscopic pitch, with edge tolerances
+relaxed an order of magnitude by the physics of Sec.~\ref{sec:calib}. The
+tension that forced the working point down in frequency also carried it into
+fabricability.
+
+\begin{acknowledgments}
+Numerical calculations were performed with open-source software. All code,
+calibration data, and figure-generation scripts sufficient to reproduce every
+number in this manuscript are available at
+\url{https://github.com/Ruqing1963/hbn-fibonacci-topological-phonons}.
+\end{acknowledgments}
+
+\bibliography{refs}
+
+\end{document}
